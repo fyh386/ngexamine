@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="jquery-1.9.0.min.js" ></script>
+		<link rel="stylesheet" href="layer/layui/css/layui.css" />
+		<script type="text/javascript" src="layer/layer.js" ></script>
+		<script type="text/javascript" src="jqGrid/js/jquery.jqGrid.src.js" ></script>
+		<link rel="stylesheet" type="text/css" href="style.css"/>
+		<script type="text/javascript" src="ExamineDemo.js" ></script>
+	</head>
+	<body>
+		<h1 class="text-c">审批流-审批方测试页面</h1>
+		<div class="text-c" style="padding: 20px;">
+			<span style="font-size: 20px;">获取审批流的请求信息：</span>
+			<img src="demo.png">
+		</div>
+	</body>
+</html>
+<script>
+	var examine = new Examine();
+	examine.Oid = "123456";//审批对象标志位
+	examine.Module = 'splcs';//所属模块，默认为页面地址
+	
+	//如果对按钮位置有特殊要求的话	
+	//	var Option = {
+	//      position: "right",//所处位置默认在页面最下方居中
+	//
+	//      oparaDom: "#add_btn",
+	//
+	//      style: "#checkbox_" + filexamine.Module + filexamine.Oid + "{display: inline-block;margin-left:30px}"
+	//  }
+	//  examine.Init(Option);
+	
+	// 如果有特殊的按钮需要跟随一起生成的
+	//examine.ExaminerCofig.AddBtns =[{ id: "csbtn001", class: "btn btn-primary radius", icon:"&#xe632;",text:"测试按钮"}]
+	
+	examine.Init(examine.Option);
+	examine.BackCallback = function (arg, c) {
+		alert("审批流退回后的回调！");
+	}
+	examine.ExaminerSubmitCallback = function (arg, c) {
+		alert("审批流提交后的回调！");
+	}
+	examine.BeforeOpenCheck = function () {
+		alert("审批流点击提交按钮先触发的事件！");
+    }
+    examine.BeforeOpenBack = function () {
+		alert("审批流点击退回按钮先触发的事件！");
+    }
+    examine.BeforeOpenHistory = function () {
+		alert("审批流点击查看记录按钮先触发的事件！");
+    }
+</script>
