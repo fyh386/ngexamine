@@ -100,62 +100,73 @@ function Examine() {
 
     this.Init = function (option) {
         $.extend(true, this.Option, option);
-        
-        //根据所属模块和操作对象ID去获取对应的审批流信息
-        $.post(this.GetCurrentExamineUrl, { url: this.Module, id: this.Oid, Tid: this.Tid }
-            , function (r) {
-                if (r.code == 0) {
-                    layer.alert(r.message, { icon: 2, title: "错误" });
-                    return;
-                    //存在审批流
-                } else if (r.code == 1) {
-                    //要求js处理域回来，不然永远在window.top
-                    window.self;
-                    var obj = r.data;
-                    _this.OperaObj = obj;
-                    _this.Pid = obj[_this.Config.UserID];
-                    _this.Oid = obj[_this.Config.ExamineObjectID];
-                        //如果是审批发起者
-                    if (_this.IsInitiator) {
-                            //$.post("/NewExamine/GetCurrentExamine", { url: F_Examine.Module, id: window.self.F_Examine.Oid }
-                        //    //$.post("/NewExamine/GetCurrentExamine", { url: '/WoodOrTraffic/ExamineList', id: F_Examine.Oid }
-                        //    , function (r) {
-                        //        //如果不存在审批流
-                        //        if (r.code = -999) {
+		var r ={
+			"code": 1,
+			"data": {
+				"ExamineID": 1015,
+				"ExamineProjectID": 96,
+				"ExamineObjectID": "123456",
+				"ExamineProjectFlowID": 111,
+				"CurrentOrder": 1,
+				"NeedExamine": true,
+				"ExaminerIDs": ["9df6fafe-700f-11e9-80d7-005056875946", "82cb163f-700f-11e9-80d7-005056875946"],
+				"CanBack": false,
+				"IsLast": false,
+				"UserID": "82cb163f-700f-11e9-80d7-005056875946"
+			}
+		}
+        if (r.code == 0) {
+            layer.alert(r.message, { icon: 2, title: "错误" });
+            return;
+            //存在审批流
+        } else if (r.code == 1) {
+            //要求js处理域回来，不然永远在window.top
+            window.self;
+            var obj = r.data;
+            _this.OperaObj = obj;
+            _this.Pid = obj[_this.Config.UserID];
+            _this.Oid = obj[_this.Config.ExamineObjectID];
+                //如果是审批发起者
+            if (_this.IsInitiator) {
+                    //$.post("/NewExamine/GetCurrentExamine", { url: F_Examine.Module, id: window.self.F_Examine.Oid }
+                //    //$.post("/NewExamine/GetCurrentExamine", { url: '/WoodOrTraffic/ExamineList', id: F_Examine.Oid }
+                //    , function (r) {
+                //        //如果不存在审批流
+                //        if (r.code = -999) {
 
-                        //        }
-                        //    })
-                        return false;
-                    }
-                    //如果当前用户为审批人
-                    //if (obj.ExaminerIDs.includes(_this.Pid)) {
-                    if (obj.NeedExamine) {
-                        _this.SubmitArg = { flowid: obj[_this.Config.ExamineProjectFlowID] };
-                        _this.BackArg = { projectid: obj[_this.Config.ExamineProjectID] };
-                        _this.InitBtn(2, _this.AfterInitBtn);
-                        $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_2']").remove();
-                    } else {
-                        //如果当前用户非审批人
-                        //将审批按钮置灰
-                        _this.BackArg = { projectid: obj[_this.Config.ExamineProjectID] };
-                        _this.InitBtn(2, _this.AfterInitBtn);
-                        $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_1']").addClass("disabled");
-                        $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_1']").attr("disabled", "disabled");
-                        //如果当前用户无退回权限
-                        if (!obj[_this.Config.CanBack]) {
-                            $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_2']").addClass("disabled");
-                            $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_2']").attr("disabled", "disabled");
-                        }
-                        return;
-                    }
-                    //不存在审批流
-                } else if (r.code == -999) {
-                    //当前用户为提交者,就应该存在提交审批按钮
-                    if (_this.IsInitiator) {
-                        _this.InitBtn(1, _this.AfterInitBtn);
-                    }
+                //        }
+                //    })
+                return false;
+            }
+            //如果当前用户为审批人
+            //if (obj.ExaminerIDs.includes(_this.Pid)) {
+            if (obj.NeedExamine) {
+                _this.SubmitArg = { flowid: obj[_this.Config.ExamineProjectFlowID] };
+                _this.BackArg = { projectid: obj[_this.Config.ExamineProjectID] };
+                _this.InitBtn(2, _this.AfterInitBtn);
+                $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_2']").remove();
+            } else {
+                //如果当前用户非审批人
+                //将审批按钮置灰
+                _this.BackArg = { projectid: obj[_this.Config.ExamineProjectID] };
+                _this.InitBtn(2, _this.AfterInitBtn);
+                $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_1']").addClass("disabled");
+                $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_1']").attr("disabled", "disabled");
+                //如果当前用户无退回权限
+                if (!obj[_this.Config.CanBack]) {
+                    $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_2']").addClass("disabled");
+                    $("#" + "checkbox_" + _this.Module + _this.Oid + " [name='btn_examine_2']").attr("disabled", "disabled");
                 }
-            });
+                return;
+            }
+            //不存在审批流
+        } else if (r.code == -999) {
+            //当前用户为提交者,就应该存在提交审批按钮
+            if (_this.IsInitiator) {
+                _this.InitBtn(1, _this.AfterInitBtn);
+            }
+        }
+          
     };
 
     //审批流的打开审核页面操作
@@ -337,15 +348,15 @@ function loadStyleString(cssText) {
 
 
 //默认的审批流按钮框
-var default_dom = "<div class='text-c mt-10' style='margin-bottom: 10px; '>\
+var default_dom = "<div class='mt-10 text-c'' style='margin-bottom: 10px'>\
 <button type='button' class='btn btn-primary radius' name='btn_examine_1'><i class='Hui-iconfont'>&#xe632;</i>提交审批</button>\
 <button type='button' style='margin-left:20px;' class='btn btn-primary radius' name='btn_examine_2'> 审批记录 </button></div>";
 
 //默认的审批流按钮框
-var default_dom2 = "<div class='text-c mt-10' style='margin-bottom: 10px;'>\
-<button type='button' class='btn btn-primary radius'  name='btn_examine_1'><i class='Hui-iconfont'>&#xe632;</i>审核</button>\
-<button type='button' style='margin-left:20px;' class='btn btn-primary radius'name='btn_examine_2'>退回</button>\
-<button type='button' style='margin-left:20px;' class='btn btn-primary radius' name='btn_examine_3'> 审批记录 </button></div>";
+var default_dom2 = "<div class='mt-10 text-c'' style='margin-bottom: 10px;'>\
+<button type='button' class='layui-btn layui-btn-normal'  name='btn_examine_1'><i class='Hui-iconfont'>&#xe632;</i>审核</button>\
+<button type='button' style='margin-left:20px;' class='layui-btn layui-btn-normal'name='btn_examine_2'>退回</button>\
+<button type='button' style='margin-left:20px;' class='layui-btn layui-btn-normal' name='btn_examine_3'> 审批记录 </button></div>";
 
 //审批框
 var check_dom = "<div>\
@@ -366,7 +377,7 @@ var check_dom = "<div>\
             </div>\
         </div>\
         <div class='text-c' style='height:15%; padding: 5px;'>\
-            <input class='btn btn-primary radius' type='button' value='确定' name='btn_examine_1' style='margin-top:18px'>\
+            <input class='layui-btn layui-btn-normal' type='button' value='确定' name='btn_examine_1' style='margin-top:18px'>\
         </div>\
     </form>\
 </div >";

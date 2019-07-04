@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+/*自定义WEB表单布局样式*/
+
+.len-S {width:120px;}
+.len-M {width:150px;}
+.len-L {width:180px;}
+
+.font-S {font-size:12px;}
+.font-M {font-size:14px;}
+.font-L {font-size:16px;}
+.font-XL {font-size:18px;}
+
+/*字体加粗*/
+.fw-100 {font-weight:100;}
+.fw-200 {font-weight:200;}
+.fw-300 {font-weight:300;}
+.fw-400 {font-weight:400;}
+.fw-500 {font-weight:500;}
+.fw-600 {font-weight:600;}
+.fw-700 {font-weight:700;}
+.fw-800 {font-weight:800;}
+
+.text-l {text-align: left;}
+
+.text-r {text-align: right;}
+
+.text-c {text-align: center;}
+
+.hide {display:none;}
+.clear { clear:both;}
+.impt-only {color: red;}
+.impt {color: red;font-size:13px;}
+
+.form-horizontal {margin:0;padding-bottom:15px;font-size:14px;}
+.form-horizontal .form-label{margin-top:3px;cursor:text;text-align:right;float:left;}
+.form-horizontal .row {margin:15px 0 0 0;box-sizing: border-box;}
+.form-horizontal .impt {color:red;padding:2px;}
+.form-label.col-w-s {width:120px;}
+.form-label.col-w-n {width:140px;}
+.form-label.col-w-l {width:160px;}
+.form-label.col-w-m {width:180px;}
+.form-label.break {word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
